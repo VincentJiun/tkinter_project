@@ -11,5 +11,14 @@
 
 ## 日誌
 
+## 轉檔指令
+1. 查詢customtkinter路徑: pip show customtkinter
+2. pyinstaller --noconfirm --onedir --windowed --add-data "<CustomTkinter Location>/customtkinter;customtkinter/"  "<Path to Python Script>"
+
+- pyinstaller --noconfirm --onedir --windowed --icon=icon.ico --add-data "d:\users\egg\desktop\tkinter_project\env\lib\site-packages/customtkinter;customtkinter/" "main.py"
+
+
+
+
 
     
