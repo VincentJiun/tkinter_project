@@ -81,6 +81,8 @@ class IndexPage(ctk.CTkFrame):
         self.url = self.entry_url.get()
         try:
             self.yt = YouTube(self.url, on_progress_callback=self.on_progress)
+            self.progress_bar.set(0)
+            self.label_percentage.configure(text = '0%')
             self.button_mp4.configure(state='disabled')
             self.button_mp3.configure(state='disabled')
             self.yt_title = re.sub(r'[\\/*?:"<>|]', "", self.yt.title)
@@ -102,6 +104,8 @@ class IndexPage(ctk.CTkFrame):
         resolution = self.selected_resolution.get()
         try:
             self.yt = YouTube(self.url, on_progress_callback=self.on_progress)
+            self.progress_bar.set(0)
+            self.label_percentage.configure(text = '0%')
             self.button_mp4.configure(state='disabled')
             self.button_mp3.configure(state='disabled')
             self.yt_title = re.sub(r'[\\/*?:"<>|]', "", self.yt.title)
