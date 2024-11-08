@@ -37,10 +37,13 @@ class ExcelCMS(Excel):
         for cell in self.ws[column_letter]:
             column_data.append(cell.value)  # 獲取每個單元格的值
 
+        self.wb.close()
+
         return column_data[1:] # 扣除第一個值(標題)
     
     def get_row_data(self, row_index):
         row_data = [cell.value for cell in self.ws[row_index+2]]
+        self.wb.close()
         return row_data
 
     
@@ -50,12 +53,14 @@ class ExcelCMS(Excel):
         for col_num, value in enumerate(updated_data, start=1):
             self.ws.cell(row=row_index + 2, column=col_num).value = value  # row_index+2是因為第一行是標題
         self.wb.save(self.path)
+        # self.wb.close()
 
     def delete_row(self, row_index):
         # 打開 Excel 並更新對應行
         self.ws = self.wb.active
         self.ws.delete_rows(row_index + 2)
         self.wb.save(self.path)
+        # self.wb.close()
 
 class ExcelQuote(Excel):
     def __init__(self, path):

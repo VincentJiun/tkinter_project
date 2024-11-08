@@ -20,20 +20,20 @@ class App(tk.Tk):
 
         # 創建 IndexPage 和 CMSPage 兩個頁面
         self.index_page = IndexPage(self)
-        self.cms_page = CMSPage(self)
-        self.quote_page = QuotePage(self)
-        self.report_page = ReportPage(self)
+        # self.cms_page = CMSPage(self)
+        # self.quote_page = QuotePage(self)
+        # self.report_page = ReportPage(self)
 
         # 預設顯示 IndexPage
         self.index_page.pack(fill='both', expand=True)
 
-    def change_page(self, page):
-        # 隱藏當前顯示的頁面
-        for widget in self.winfo_children():
-            widget.pack_forget()
+    # def change_page(self, page):
+    #     # 隱藏當前顯示的頁面
+    #     for widget in self.winfo_children():
+    #         widget.pack_forget()
 
-        # 顯示傳入的目標頁面
-        page.pack(fill='both', expand=True)
+    #     # 顯示傳入的目標頁面
+    #     page.pack(fill='both', expand=True)
 
 class IndexPage(ttk.Frame):
     def __init__(self, parent):
@@ -57,13 +57,13 @@ class IndexPage(ttk.Frame):
         self.title.place(relx=0.5, rely=0.1, relheight=0.1, relwidth=0.5, anchor='center')
         
         # buttons
-        self.btn_quote = tk.Button(self.frame_container, text='報價單', font=('標楷體', 20, 'bold'), fg='#000000', command=lambda: self.master.change_page(self.master.quote_page))
+        self.btn_quote = tk.Button(self.frame_container, text='報價單', font=('標楷體', 20, 'bold'), fg='#000000', command=self.chage_quote_page)
         self.btn_quote.place(relx=0.25, rely=0.85, relwidth=0.2, relheight=0.1, anchor='center')
         
-        self.btn_cms = tk.Button(self.frame_container, text='客戶管理', font=('標楷體', 20, 'bold'), fg='#000000', command=lambda: self.master.change_page(self.master.cms_page))
+        self.btn_cms = tk.Button(self.frame_container, text='客戶管理', font=('標楷體', 20, 'bold'), fg='#000000', command=self.change_cms_page)
         self.btn_cms.place(relx=0.5, rely=0.85, relwidth=0.2, relheight=0.1, anchor='center')
         
-        self.btn_report = tk.Button(self.frame_container, text='營收報表', font=('標楷體', 20, 'bold'), fg='#000000', command=lambda: self.master.change_page(self.master.report_page))
+        self.btn_report = tk.Button(self.frame_container, text='營收報表', font=('標楷體', 20, 'bold'), fg='#000000', command=self.change_report_page)
         self.btn_report.place(relx=0.75, rely=0.85, relwidth=0.2, relheight=0.1, anchor='center')
 
         self.bind_resize_event(self.label_img, img)
@@ -91,6 +91,27 @@ class IndexPage(ttk.Frame):
             # 更新 Label 中的图片
             label.config(image=tk_image)
             label.image = tk_image  # 保留引用，防止图片被垃圾回收
+
+    def change_cms_page(self):
+        self.unload_page()
+        self.cms_page = CMSPage(self)
+        self.cms_page.pack(fill='both', expand=True)
+
+    def chage_quote_page(self):
+        self.unload_page()
+        self.quote_page = QuotePage(self)
+        self.quote_page.pack(fill='both', expand=True)
+
+    def change_report_page(self):
+        self.unload_page()
+        self.report_page = ReportPage(self)
+        self.report_page.pack(fill='both', expand=True)
+
+    def unload_page(self):
+        """刪除頁面內容，清理物件"""
+        for widget in self.frame_container.winfo_children():
+            widget.destroy()
+        self.frame_container.destroy()
 
 class CMSPage(ttk.Frame):
     def __init__(self, parent):
@@ -125,7 +146,7 @@ class CMSPage(ttk.Frame):
         self.title = tk.Label(self.frame_container, text='客戶管理', font=('標楷體', 30, 'bold'), fg='#000000')
         self.title.place(relx=0.5, rely=0.08, relheight=0.1, relwidth=0.5, anchor='center')
         # button - back 
-        self.btn_back = tk.Button(self.frame_container, text='回首頁', font=('標楷體', 16, 'bold'), fg='#000000', command=lambda: self.master.change_page(self.master.index_page))
+        self.btn_back = tk.Button(self.frame_container, text='回首頁', font=('標楷體', 16, 'bold'), fg='#000000', command=self.change_index_page)
         self.btn_back.place(relx=0.9, rely=0.1, relwidth=0.1, relheight=0.05, anchor='center')
         # treeview 
         self.tree_cms = ttk.Treeview(self.frame_container)
@@ -178,6 +199,17 @@ class CMSPage(ttk.Frame):
         self.btn_delete = tk.Button(self.frame_container, text='刪除客戶資料', font=('標楷體', 14, 'bold'), fg='#000000', command=self.delete_custom)
         self.btn_delete.place(relx=0.7, rely=0.7, relwidth=0.15, relheight=0.04, anchor='center')
 
+    def change_index_page(self):
+        self.unload_page()
+        self.index_page = IndexPage(self)
+        self.index_page.pack(fill='both', expand=True)
+
+    def unload_page(self):
+        """刪除頁面內容，清理物件"""
+        for widget in self.frame_container.winfo_children():
+            widget.destroy()
+        self.frame_container.destroy()
+    
     def update_treeview(self):
         # 先清空現有的內容
         for item in self.tree_cms.get_children():
@@ -299,6 +331,17 @@ class QuotePage(ttk.Frame):
 
         self.create_page()  # 初始化時創建佈局
 
+    def change_index_page(self):
+        self.unload_page()
+        self.index_page = IndexPage(self)
+        self.index_page.pack(fill='both', expand=True)
+
+    def unload_page(self):
+        """刪除頁面內容，清理物件"""
+        for widget in self.frame_container.winfo_children():
+            widget.destroy()
+        self.frame_container.destroy()
+    
     def create_page(self):
         # page Frame
         self.frame_container = ttk.Frame(self)
@@ -323,7 +366,7 @@ class QuotePage(ttk.Frame):
         self.title = tk.Label(self.inner_frame, text='報價單', font=('標楷體', 30, 'bold'), fg='#000000')
         self.title.grid(row=0, column=0, columnspan=8, pady=10, padx=10, sticky="nesw")
         # # Buttons
-        self.btn_back = tk.Button(self.inner_frame, text='回首頁', font=('標楷體', 16, 'bold'), fg='#000000', command=lambda: self.master.change_page(self.master.index_page))
+        self.btn_back = tk.Button(self.inner_frame, text='回首頁', font=('標楷體', 16, 'bold'), fg='#000000', command=self.change_index_page)
         self.btn_back.grid(row=1, column=7, pady=10, padx=25, sticky="we")
         self.btn_clear = tk.Button(self.inner_frame, text='清除', font=('標楷體', 16, 'bold'), fg='#000000', command=self.clear)
         self.btn_clear.grid(row=2, column=3, pady=10, padx=10, sticky="we")
@@ -523,7 +566,6 @@ class QuotePage(ttk.Frame):
             subprocess.Popen(['start', 'excel.exe', file_path], shell=True)
         else:
             print('沒有檔案')
-        
 
         # try:
         #     os.startfile(file_path)
@@ -536,8 +578,6 @@ class QuotePage(ttk.Frame):
         #     print('讀取文件時解碼錯誤!')
         # except Exception as e:
         #     print(f"無法開啟檔案: {file_path}，錯誤訊息: {e}")
-                
-
 
 class ReportPage(ttk.Frame):
     def __init__(self, parent):
@@ -555,9 +595,19 @@ class ReportPage(ttk.Frame):
         self.title.place(relx=0.5, rely=0.1, relheight=0.1, relwidth=0.5, anchor='center')
         
         # buttons
-        self.btn_back = tk.Button(self.frame_container, text='回首頁', font=('標楷體', 16, 'bold'), fg='#000000', command=lambda: self.master.change_page(self.master.index_page))
+        self.btn_back = tk.Button(self.frame_container, text='回首頁', font=('標楷體', 16, 'bold'), fg='#000000', command=self.change_index_page)
         self.btn_back.place(relx=0.9, rely=0.1, relwidth=0.1, relheight=0.05, anchor='center')
 
+    def change_index_page(self):
+        self.unload_page()
+        self.index_page = IndexPage(self)
+        self.index_page.pack(fill='both', expand=True)
+
+    def unload_page(self):
+        """刪除頁面內容，清理物件"""
+        for widget in self.frame_container.winfo_children():
+            widget.destroy()
+        self.frame_container.destroy()
 
 if __name__ == '__main__':
     app = App()
