@@ -27,7 +27,7 @@ pip install -r requirements.txt
 1. 查詢customtkinter路徑: pip show customtkinter
 2. pyinstaller --noconfirm --onedir --windowed --add-data "<CustomTkinter Location>/customtkinter;customtkinter/"  "<Path to Python Script>"
 
-- pyinstaller --noconfirm --onedir --windowed --icon=icon.ico --add-data "c:\users\egghead\appdata\local\packages\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\localcache\local-packages\python310\site-packages/customtkinter;customtkinter/" "main.py"
+- pyinstaller --noconfirm --onedir --windowed --icon=icon.ico --add-data "d:\users\egg\desktop\tkinter_project\youtube_downloader\env\lib\site-packages/customtkinter;customtkinter/" "main.py"
 
 
 
