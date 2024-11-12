@@ -15,6 +15,7 @@ pip install -r requirements.txt
 - 2024/10/20 : 客戶管理系統 (完成) 
     - 檔案路徑: ./data/customers.xlsx
 - 2024/11/08 : 解決客戶管理系統更新時，無法同步其他頁面選項更新。 (完成)
+- 2024/11/12 : EXCEL表格末端 新增 '以下空白'
 
 ## 轉檔指令
 - pyinstaller --onefile --windowed --icon=./image/icon.ico main.py

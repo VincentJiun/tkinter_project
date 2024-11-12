@@ -71,18 +71,21 @@ class ExcelQuote(Excel):
         else:
             pass
 
-    def modify_quote(self, q_time, custom, *list):
+    def modify_quote(self, q_time, custom, *lst):
         self.wb_quote = load_workbook(self.path)
         self.ws = self.wb_quote.active
         # 將 data 填入 Excel 表格
-        for col, column_data in enumerate(list, start=2):  # 逐列處理資料 =SUM(D9*F9)
+        for col, column_data in enumerate(lst, start=2):  # 逐列處理資料 =SUM(D9*F9)
             for row, value in enumerate(column_data, start=9):
                 self.ws.cell(row=row, column=col, value=value)
 
-        for row, value in enumerate(list[1], start=1):
+        for row, value in enumerate(lst[1], start=1):
             self.ws.cell(row=row+8, column=1, value=str(row))
             formula = f"=SUM(D{row+8}*F{row+8})"
             self.ws.cell(row=row+8, column=7, value=formula)
+
+        total = len(lst[1]) +10
+        self.ws[f'B{total}'] = '以下空白'
 
             # for col in [4, 6]:  # D列和F列
             #     cell = self.ws.cell(row=row+8, column=col)
